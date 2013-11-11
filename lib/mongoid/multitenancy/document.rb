@@ -50,15 +50,15 @@ module Mongoid
 
         # Redefine 'validates_with' to add the tenant scope when using a UniquenessValidator
         def validates_with(*args, &block)
-          if args.first == Validations::UniquenessValidator
+          if args.first == Validatable::UniquenessValidator
             args.last[:scope] = Array(args.last[:scope]) << self.tenant_field
           end
           super(*args, &block)
         end
 
-        # Redefine 'index' to include the tenant field in first position
+        # Redefine 'index' to include the tenant field in first position (unless it's a full text index)
         def index(spec, options = nil)
-          spec = { self.tenant_field => 1 }.merge(spec)
+          spec = { self.tenant_field => 1 }.merge(spec) unless spec.inject(nil) {|result,v| result = result || v.last == 'text' }
           super(spec, options)
         end
 

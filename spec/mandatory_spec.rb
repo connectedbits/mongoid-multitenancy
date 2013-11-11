@@ -9,6 +9,10 @@ describe Mandatory do
 
   describe ".default_scope" do
     before {
+
+      Mandatory.with(database: "admin").mongo_session.command(setParameter: 1, textSearchEnabled: true)
+      Mandatory.create_indexes
+
       Mongoid::Multitenancy.with_tenant(client) { @itemX = Mandatory.create!(:title => "title X", :slug => "article-x") }
       Mongoid::Multitenancy.with_tenant(another_client) { @itemY = Mandatory.create!(:title => "title Y", :slug => "article-y") }
     }
@@ -20,6 +24,11 @@ describe Mandatory do
       it "should filter on the current tenant" do
         Mandatory.all.to_a.should =~ [@itemY]
       end
+
+      it "should fts filter on the current tenant" do
+        Mandatory.text_search("Y").to_a.should =~ [@itemY]
+      end
+
     end
 
     context "without a current tenant" do

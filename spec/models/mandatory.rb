@@ -12,4 +12,5 @@ class Mandatory
   validates_presence_of :title
 
   index({ :title => 1 })
+  index({ :title => "text"})
 end

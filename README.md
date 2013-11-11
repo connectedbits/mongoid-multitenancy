@@ -1,3 +1,10 @@
+
+###*Forked from PerfectMemory/mongoid-multitenancy*
+
+* *update gemspec for mongoid v4*
+* *support full text search indexes*
+
+
 # mongoid-multitenancy
 
 mongoid-multitenancy adds the ability to scope [Mongoid](https://github.com/mongoid/mongoid) models to a tenant in a **shared database strategy**. Tenants are represented by a tenant model, such as `Client`. mongoid-multitenancy will help you set the current tenant on each request and ensures all 'tenant models' are always properly scoped to the current tenant: when viewing, searching and creating.
